@@ -129,7 +129,7 @@ I used this training data for training the model. The ideal number of epochs see
 
 ### Car Driving a Full Autonomous Lap
 Here is a video of the car driving fully autonomously around the track:
-<iframe width="560" height="315" src="https://www.youtube.com/embed/NFF8ITAfV18" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<a href="https://www.youtube.com/embed/NFF8ITAfV18" target="_blank"><img src="https://www.youtube.com/embed/NFF8ITAfV18/0.jpg" alt="Autonomous Drive" width="240" height="180" border="10" /></a>
 
 ### Car Recovering from Manual Intervention
 In this second video, I manually intervened a couple times to force the car onto the curb.  In all cases, it recovered:
