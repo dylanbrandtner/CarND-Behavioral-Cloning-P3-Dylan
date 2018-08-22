@@ -102,13 +102,16 @@ Here is where my first testing began, but the results were not particularly good
 
 To augment the data set with a bit more variatey, I added in the left and right angles camera images, and applied a correction of 0.2 to the steering angle to account for location of the camera.  Here is what the 3 different angles look like from the perspective of the car:
 
-Center:
+**Center:**
+
 ![alt text][image6]
 
-Left:
+**Left:**
+
 ![alt text][image7]
 
-Right:
+**Right:**
+
 ![alt text][image8]
 
 I also noticed that in places with a lot of extra scenery, the performance was the worst.  Thus, I also cropped off the top 70 pixels and bottom 25 pixels of the images, as these were simply more noise for the model to be distracted by.  Below you can see the center camera image with the cropped area highlighed in red:  
@@ -131,8 +134,8 @@ I used this training data for training the model. The ideal number of epochs see
 
 ### Car Driving a Full Autonomous Lap
 Here is a video of the car driving fully autonomously around the track: [video.mp4](video.mp4)
-Also available on Youtube at https://www.youtube.com/edit?o=U&video_id=NFF8ITAfV18
+Also available on Youtube at https://youtu.be/NFF8ITAfV18
 
 ### Car Recovering from Manual Intervention
 In this second video, I manually intervened a couple times to force the car onto the curb.  In all cases, it recovered:  
-https://www.youtube.com/embed/7w8gubrFX44
+https://youtu.be/7w8gubrFX44
