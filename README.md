@@ -104,8 +104,10 @@ To augment the data set with a bit more variatey, I added in the left and right 
 
 Center:
 ![alt text][image6]
+
 Left:
 ![alt text][image7]
+
 Right:
 ![alt text][image8]
 
@@ -128,8 +130,6 @@ I used this training data for training the model. The ideal number of epochs see
 ## Result
 
 ### Car Driving a Full Autonomous Lap
-Here is a video of the car driving fully autonomously around the track:
-<a href="https://www.youtube.com/embed/NFF8ITAfV18" target="_blank"><img src="https://www.youtube.com/embed/NFF8ITAfV18/0.jpg" alt="Autonomous Drive" width="240" height="180" border="10" /></a>
-
+Here is a video of the car driving fully autonomously around the track: [video.mp4](video.mp4)
 ### Car Recovering from Manual Intervention
 In this second video, I manually intervened a couple times to force the car onto the curb.  In all cases, it recovered:
