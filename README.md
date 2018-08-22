@@ -94,13 +94,13 @@ I then recorded the two laps of center lane driving in the opposite direction:
 
 ![alt text][image3]
 
-I keep each lap in a separate directory so that I could exclude parts of my full data set if necessary.  Also, as the simulator took some getting used to, I didn't want to contaimate "good" data, with any failed runs.
+I keep each lap in a separate directory so that I could exclude parts of my full data set if necessary.  Also, as the simulator took some getting used to, I didn't want to contaminate "good" data, with any failed runs.
 
 I preprocessed this data by normalizing it (dividing it by 255) and then mean centering it (subtract 0.5), and randomly shuffled the data set and put 20% of the data into a validation set.  
 
-Here is where my first testing began, but the results were not particularly good.  I noticed that the model seemed to only preform well when the vehicle was in the center of the road (which makes sense since that is the only training data it had).  Anytime it encoutered an edge or rolled slightly over it, the car would veer sharply off the track. 
+Here is where my first testing began, but the results were not particularly good.  I noticed that the model seemed to only preform well when the vehicle was in the center of the road (which makes sense since that is the only training data it had).  Anytime it encountered an edge or rolled slightly over it, the car would veer sharply off the track. 
 
-To augment the data set with a bit more variatey, I added in the left and right angles camera images, and applied a correction of 0.2 to the steering angle to account for location of the camera.  Here is what the 3 different angles look like from the perspective of the car:
+To augment the data set with a bit more variety, I added in the left and right angles camera images, and applied a correction of 0.2 to the steering angle to account for location of the camera.  Here is what the 3 different angles look like from the perspective of the car:
 
 **Center:**
 
@@ -114,28 +114,30 @@ To augment the data set with a bit more variatey, I added in the left and right 
 
 ![alt text][image8]
 
-I also noticed that in places with a lot of extra scenery, the performance was the worst.  Thus, I also cropped off the top 70 pixels and bottom 25 pixels of the images, as these were simply more noise for the model to be distracted by.  Below you can see the center camera image with the cropped area highlighed in red:  
+I also noticed that in places with a lot of extra scenery, the performance was the worst.  Thus, I also cropped off the top 70 pixels and bottom 25 pixels of the images, as these were simply more noise for the model to be distracted by.  Below you can see the center camera image with the cropped area highlighted in red:  
 ![alt text][image9]
 
-At this point, the vehicle could somtimes make it around the track, but again, if any correction steered the vehicle into a barrier too far, it could not recover.  It encoutered this scenario on some of the sharper turns.  
+At this point, the vehicle could sometimes make it around the track, but again, if any correction steered the vehicle into a barrier too far, it could not recover.  It encountered this scenario on some of the sharper turns.  
 
 To combat this, I recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to do so if it ever encountered an edge.  These images show what a recovery looks like from both sides:
 
 ![alt text][image4]
 ![alt text][image5]
 
-This improved my results, and to some degree, I could also force the car into a bad siutation by taking temporary manual control and driving it off onto the curb.  Unless I drove _over_ the curb, the model was able to recover.   
+After this collection process, I had 22,257 total samples (include the 3 camera angles). 
 
-After this collection process, I had 22,257 total samples (include the 3 camera anlges). 
+I used this training data for training the model. The ideal number of epochs seemed to be 20 as evidenced by a leveling off in validation loss after this point.  I used an adam optimizer so that manually training the learning rate wasn't necessary.  My final validation loss was 0.0221.
 
-I used this training data for training the model. The ideal number of epochs seemd to be 20 as evidenced by a levling off in validation loss after this point.  I used an adam optimizer so that manually training the learning rate wasn't necessary.  My final validation loss was 0.0221.
+This improved my results dramatically, and to some degree (as will be shown below), I could also force the car into a bad situation by taking temporary manual control and driving it off onto the curb.  Unless I drove _over_ the curb, the model was able to recover.   
 
 ## Result
 
 ### Car Driving a Full Autonomous Lap
-Here is a video of the car driving fully autonomously around the track: [video.mp4](video.mp4)
+Here is a video of the car driving fully autonomously around the track as required by the rubric.  It was created using drive.py and video.py: [video.mp4](video.mp4)
 Also available on Youtube at https://youtu.be/NFF8ITAfV18
 
 ### Car Recovering from Manual Intervention
-In this second video, I manually intervened a couple times to force the car onto the curb.  In all cases, it recovered:  
+In this second video, I manually intervened a couple times to force the car onto the curb.  In all cases, it recovered. 
+
+The first person recorded video wasn't indicative of this as you couldn't see when I had intervened, so I used a local recording and uploaded it here:  
 https://youtu.be/7w8gubrFX44
