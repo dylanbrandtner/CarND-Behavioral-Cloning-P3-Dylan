@@ -123,10 +123,12 @@ This improved my results, and to some degree, I could also force the car into a 
 
 After this collection process, I had 22,257 total samples (include the 3 camera anlges). 
 
-I used this training data for training the model. The ideal number of epochs seemd to be 20 as evidenced by a levling off in validation loss after this point.  I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The ideal number of epochs seemd to be 20 as evidenced by a levling off in validation loss after this point.  I used an adam optimizer so that manually training the learning rate wasn't necessary.  My final validation loss was 0.0221.
 
 ## Result
 
 ### Car Driving a Full Autonomous Lap
+Here is a video of the car driving fully autonomously around the track:
 
-### Car Recovering from Manual Intervention 
+### Car Recovering from Manual Intervention
+In this second video, I manually intervened a couple times to force the car onto the curb.  In all cases, it recovered:
