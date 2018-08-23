@@ -2,9 +2,9 @@
 
 ## Goals: 
 * Use the simulator to collect data of good driving behavior
-* Build, a convolutional neural network in Keras that predicts steering angles from images
+* Build a convolutional neural network in Keras that predicts steering angles from driving images
 * Train and validate the model with a training and validation set
-* Test that the model successfully drives around track one without leaving the road
+* Test that the model successfully drives around the test track once without leaving the road
 * Summarize the results with a written report
 
 [//]: # (Image References)
@@ -20,7 +20,7 @@
 [image9]: ./examples/center_cropped.jpg "Cropped Cam"
 
 ## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
+Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
 ---
 ### Files Submitted & Code Quality
@@ -34,7 +34,7 @@ My project includes the following files:
 * README.md summarizing the results
 
 #### 2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+Using the Udacity provided simulator and drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
 python drive.py model.h5
 ```
@@ -51,13 +51,11 @@ I used a convolutional neural network with a lambda layer to normalize the data,
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting. 
-
-The model was trained and validated on different data sets to ensure that the model was not overfitting. The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets, and varying epochs to ensure that the model was not overfitting.  I did not need to introduce any dropout to the model. The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually.  I used 20 epochs as the validation loss was no longer decreasing after that amount.
+The model used an adam optimizer, so the learning rate was not tuned manually.  I used 20 epochs as the validation loss was no longer consistently decreasing after that amount.
 
 #### 4. Appropriate training data
 
@@ -67,15 +65,15 @@ Training data was chosen to keep the vehicle driving on the road. I captured two
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to start with an existing model used in autonomous driving. I used the neural network used by Nvida as it was already a proven way to autonomously operate a vehicle.   
+The overall strategy for deriving a model architecture was to start with an existing model used in autonomous driving. I used the neural network from Nvidia's autonomous driving team as it was already a proven way to autonomously operate a vehicle (and was suggested in the training materials).
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set and ran my model in the simulator.  I found that my first model had a _very_ small validation loss (less than 0.01), but only preformed well on staight paths and without hitting the edges of the track.  It was unable to recover from any deviations from center driving.  Instead of making major adjustments to the architecture, I instead augmented the data.  This will be covered more in section 3 below as data collection and augmentation had the biggest impact on my results.     
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation sets and ran my model in the simulator.  I found that my first model had a _very_ small validation loss (less than 0.01), but only preformed well on staight paths and without hitting the edges of the track.  It was unable to recover from any deviations from center driving.  Instead of making major adjustments to the architecture, I instead augmented the data.  This will be covered more in section 3 below as data collection and augmentation had the biggest impact on my results.     
 
 I didn't have any major issues with overfitting, and since Nvidia's network did not contain any dropout, I decided not to introduce it myself. 
 
 After augmenting the dataset with enough information, and setting the epochs to an amount where the validation loss leveled out, I reached a reasonable stopping point.  
 
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+At the end of the process, the vehicle was able to drive autonomously around the track without leaving the road and recover from minor overlaps with the side lane lines/curbs.
 
 #### 2. Final Model Architecture
 
@@ -94,11 +92,11 @@ I then recorded the two laps of center lane driving in the opposite direction:
 
 ![alt text][image3]
 
-I keep each lap in a separate directory so that I could exclude parts of my full data set if necessary.  Also, as the simulator took some getting used to, I didn't want to contaminate "good" data, with any failed runs.
+I kept each lap in a separate directory so that I could exclude parts of my full data set if necessary.  Also, as the simulator took some getting used to, I didn't want to contaminate "good" data with any failed runs.
 
-I preprocessed this data by normalizing it (dividing it by 255) and then mean centering it (subtract 0.5), and randomly shuffled the data set and put 20% of the data into a validation set.  
+I preprocessed this data by normalizing it (dividing it by 255) and then mean centering it (subtracting 0.5). I then randomly shuffled the data set and put 20% of the data into a validation set.  
 
-Here is where my first testing began, but the results were not particularly good.  I noticed that the model seemed to only preform well when the vehicle was in the center of the road (which makes sense since that is the only training data it had).  Anytime it encountered an edge or rolled slightly over it, the car would veer sharply off the track. 
+Here is where my first significant testing began, but the results were not particularly good.  I noticed that the model seemed to only preform well when the vehicle was in the center of the road, which makes sense since that was the only training data it had.  Anytime it encountered an edge or rolled slightly over it, the car would never recover. 
 
 To augment the data set with a bit more variety, I added in the left and right angles camera images, and applied a correction of 0.2 to the steering angle to account for location of the camera.  Here is what the 3 different angles look like from the perspective of the car:
 
@@ -114,30 +112,30 @@ To augment the data set with a bit more variety, I added in the left and right a
 
 ![alt text][image8]
 
-I also noticed that in places with a lot of extra scenery, the performance was the worst.  Thus, I also cropped off the top 70 pixels and bottom 25 pixels of the images, as these were simply more noise for the model to be distracted by.  Below you can see the center camera image with the cropped area highlighted in red:  
+I also noticed that certain portions of the track, regardless of track angle, seemed to have strange impacts on the model's chosen steering angle.  I suspected the rest of the non-track portions of the image were impacting the learning algorithm. Thus, I also cropped off the top 70 pixels and bottom 25 pixels of the images (as suggested in the training materials) to reduce noise.  Below you can see the center camera image with the cropped area highlighted in red:  
 ![alt text][image9]
 
-At this point, the vehicle could sometimes make it around the track, but again, if any correction steered the vehicle into a barrier too far, it could not recover.  It encountered this scenario on some of the sharper turns.  
+After re-training the model, the vehicle could sometimes make it around the track, but again, if any adjustment made by the model steered the vehicle into a barrier too far, it could not recover.  It encountered this scenario on some of the sharper turns.  
 
-To combat this, I recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to do so if it ever encountered an edge.  These images show what a recovery looks like from both sides:
+To combat this, I recorded the vehicle recovering from the left and right sides of the road back to center so that the vehicle would learn to do so if it ever encountered an edge.  These images show what a recovery looks like from both sides:
 
 ![alt text][image4]
 ![alt text][image5]
 
-After this collection process, I had 22,257 total samples (include the 3 camera angles). 
+After this collection process, I had 22,257 total samples (including the 3 camera different angles). 
 
-I used this training data for training the model. The ideal number of epochs seemed to be 20 as evidenced by a leveling off in validation loss after this point.  I used an adam optimizer so that manually training the learning rate wasn't necessary.  My final validation loss was 0.0221.
+I used this data for training the model. The ideal number of epochs seemed to be 20 as evidenced by a leveling off in validation loss after this point.  I used an adam optimizer so that manually training the learning rate wasn't necessary.  My final validation loss was 0.0221.
 
-This improved my results dramatically, and to some degree (as will be shown below), I could also force the car into a bad situation by taking temporary manual control and driving it off onto the curb.  Unless I drove _over_ the curb, the model was able to recover.   
+This improved my results dramatically, and to some degree (as will be shown below), I could also force the car into a bad situation by taking temporary manual to drive it off onto the curb, and the model would recover. 
 
 ## Result
 
 ### Car Driving a Full Autonomous Lap
-Here is a video of the car driving fully autonomously around the track as required by the rubric.  It was created using drive.py and video.py: [video.mp4](video.mp4)
-Also available on Youtube at https://youtu.be/NFF8ITAfV18
+Here is the video of the car driving fully autonomously around the track as required by the rubric.  It was created using drive.py and video.py scripts: [video.mp4](video.mp4)
+
+I also made the video available on Youtube at https://youtu.be/NFF8ITAfV18
 
 ### Car Recovering from Manual Intervention
-In this second video, I manually intervened a couple times to force the car onto the curb.  In all cases, it recovered. 
+In this second video, I manually intervened several times to force the car onto the curb.  In all cases, it recovered. 
 
-The first person recorded video wasn't indicative of this as you couldn't see when I had intervened, so I used a local recording and uploaded it here:  
-https://youtu.be/7w8gubrFX44
+The first person recorded video wasn't indicative of this as you couldn't see when I had intervened, so I used a local recording and uploaded it here: https://youtu.be/7w8gubrFX44
