@@ -1,4 +1,4 @@
-# **Behavioral Cloning using a Convolutional Neural Network** 
+# **Behavioral Cloning Using a Convolutional Neural Network** 
 
 ## Goals: 
 * Use the simulator to collect data of good driving behavior
