@@ -112,7 +112,7 @@ To augment the data set with a bit more variety, I added in the left and right a
 
 ![alt text][image8]
 
-I also noticed that certain portions of the track, regardless of track angle, seemed to have strange impacts on the model's chosen steering angle.  I suspected the rest of the non-track portions of the image were impacting the learning algorithm. Thus, I also cropped off the top 70 pixels and bottom 25 pixels of the images (as suggested in the training materials) to reduce noise.  Below you can see the center camera image with the cropped area highlighted in red:  
+I also noticed that certain portions of the track, regardless of track angle, seemed to have strange impacts on the model's chosen steering angle.  I suspected the non-track portions of the image were impacting the learning algorithm. Thus, I also cropped off the top 70 pixels and bottom 25 pixels of the images (as suggested in the training materials) to reduce noise.  Below you can see the center camera image with the cropped area highlighted in red:  
 ![alt text][image9]
 
 After re-training the model, the vehicle could sometimes make it around the track, but again, if any adjustment made by the model steered the vehicle into a barrier too far, it could not recover.  It encountered this scenario on some of the sharper turns.  
@@ -126,7 +126,7 @@ After this collection process, I had 22,257 total samples (including the 3 camer
 
 I used this data for training the model. The ideal number of epochs seemed to be 20 as evidenced by a leveling off in validation loss after this point.  I used an adam optimizer so that manually training the learning rate wasn't necessary.  My final validation loss was 0.0221.
 
-This improved my results dramatically, and to some degree (as will be shown below), I could also force the car into a bad situation by taking temporary manual to drive it off onto the curb, and the model would recover. 
+This improved my results dramatically, and to some degree (as will be shown below), I could even force the car into a bad situation by taking temporary manual control to drive it onto the curb, and the model would recover. 
 
 ## Result
 
